@@ -1,0 +1,21 @@
+{
+  "name": "mercalito-frontend",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "lucide-react": "^0.475.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "vite": "^6.1.1"
+  },
+  "devDependencies": {
+    "@rollup/rollup-darwin-x64": "^4.61.1"
+  }
+}

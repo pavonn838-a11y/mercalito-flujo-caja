@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: mercalito-flujo-caja
+    runtime: node
+    plan: starter
+    buildCommand: npm run render:build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /var/data
+      - key: APP_USER
+        sync: false
+      - key: APP_PASSWORD
+        sync: false
+    disk:
+      name: mercalito-data
+      mountPath: /var/data
+      sizeGB: 1
