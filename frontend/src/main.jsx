@@ -182,9 +182,12 @@ function App() {
   return (
     <main className="app-shell">
       <header className="topbar">
-        <div>
-          <p className="eyebrow">Mercalito</p>
-          <h1>Flujo de caja diario</h1>
+        <div className="brand-block">
+          <img className="brand-logo" src="/brand/mercalito-horizontal.png" alt="Mercalito" />
+          <div>
+            <p className="eyebrow">Control financiero</p>
+            <h1>Flujo de caja diario</h1>
+          </div>
         </div>
         <div className="top-actions">
           <label className="date-control">
@@ -200,7 +203,9 @@ function App() {
 
       <section className="import-band">
         <div className="import-tile">
-          <FileSpreadsheet size={22} />
+          <span className="tile-icon">
+            <FileSpreadsheet size={22} />
+          </span>
           <div>
             <strong>eCheq</strong>
             <span>{loadSummary.echeq} cargados</span>
@@ -213,7 +218,9 @@ function App() {
           </label>
         </div>
         <div className="import-tile">
-          <FileSpreadsheet size={22} />
+          <span className="tile-icon">
+            <FileSpreadsheet size={22} />
+          </span>
           <div>
             <strong>Cheques fisicos</strong>
             <span>{loadSummary.physical} cargados</span>
