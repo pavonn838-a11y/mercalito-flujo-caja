@@ -1,21 +1,18 @@
 {
-  "name": "mercalito-frontend",
+  "name": "mercalito-flujo-caja",
   "version": "1.0.0",
-  "type": "module",
   "private": true,
+  "description": "Aplicacion web simple para controlar el flujo de caja diario de Mercalito.",
+  "engines": {
+    "node": ">=24.14.0 <25.0.0"
+  },
   "scripts": {
-    "dev": "vite --host 0.0.0.0",
-    "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0"
-  },
-  "dependencies": {
-    "@vitejs/plugin-react": "^4.3.4",
-    "lucide-react": "^0.475.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "vite": "^6.1.1"
-  },
-  "devDependencies": {
-    "@rollup/rollup-darwin-x64": "^4.61.1"
+    "install:all": "npm install --prefix backend && npm install --prefix frontend",
+    "dev": "node scripts/dev.js",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "start": "npm run start --prefix backend",
+    "build": "npm run build --prefix frontend",
+    "render:build": "npm run install:all && npm run build"
   }
 }
