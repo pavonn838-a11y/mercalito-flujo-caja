@@ -1,0 +1,628 @@
+:root {
+  color-scheme: light;
+  font-family: "Aptos", "Segoe UI", sans-serif;
+  --bg: #f7f8f4;
+  --ink: #18211d;
+  --muted: #68746e;
+  --line: #dfe4dc;
+  --paper: #fbfcf8;
+  --panel: #ffffff;
+  --green: #16804a;
+  --green-soft: #e5f5eb;
+  --yellow: #a86c08;
+  --yellow-soft: #fff3d0;
+  --red: #c8372d;
+  --red-soft: #ffe7e3;
+  --blue: #1e6174;
+  --navy: #102a2f;
+  --accent: #f2b33d;
+  --shadow: 0 18px 50px rgba(20, 38, 33, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(180deg, rgba(16, 42, 47, 0.07), transparent 320px),
+    linear-gradient(90deg, rgba(22, 128, 74, 0.08), transparent 38%),
+    var(--bg);
+  color: var(--ink);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button,
+label.primary-button,
+.export-link {
+  cursor: pointer;
+}
+
+.app-shell {
+  width: min(1440px, 100%);
+  margin: 0 auto;
+  padding: 26px;
+}
+
+.topbar,
+.import-band,
+.workspace,
+.summary-grid,
+.type-total-grid {
+  width: 100%;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 8px;
+  padding: 18px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.72)),
+    url("/brand/mercalito-sello.png") right 26px center / 150px auto no-repeat;
+  box-shadow: var(--shadow);
+}
+
+.brand-block {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  min-width: 0;
+}
+
+.brand-logo {
+  width: clamp(150px, 18vw, 230px);
+  max-height: 78px;
+  object-fit: contain;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 10px 18px rgba(16, 42, 47, 0.12));
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  color: var(--green);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.73rem;
+  letter-spacing: 0.08em;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+h1 {
+  font-size: clamp(1.75rem, 3.2vw, 2.85rem);
+  line-height: 1.04;
+  color: var(--navy);
+}
+
+h2 {
+  font-size: 1.35rem;
+}
+
+h3 {
+  font-size: 1rem;
+}
+
+.top-actions,
+.import-band {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.date-control,
+.ghost-button,
+.primary-button,
+.danger-button,
+.search-box {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  background: var(--panel);
+  color: var(--ink);
+  text-decoration: none;
+  box-shadow: 0 6px 16px rgba(16, 42, 47, 0.05);
+}
+
+.date-control input,
+.search-box input {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+}
+
+.ghost-button,
+.danger-button {
+  appearance: none;
+}
+
+.primary-button {
+  border-color: var(--green);
+  background: var(--green);
+  color: white;
+  font-weight: 800;
+}
+
+.primary-button input {
+  display: none;
+}
+
+.danger-button {
+  background: var(--red-soft);
+  color: var(--red);
+  border-color: #f2c7c1;
+  font-weight: 800;
+}
+
+.import-band {
+  margin-bottom: 18px;
+}
+
+.import-tile {
+  flex: 1 1 250px;
+  min-height: 82px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  box-shadow: 0 10px 28px rgba(16, 42, 47, 0.07);
+}
+
+.tile-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--green-soft);
+  color: var(--green);
+  flex: 0 0 auto;
+}
+
+.import-tile div {
+  flex: 1;
+  display: grid;
+  gap: 3px;
+}
+
+.import-tile span,
+.import-tile small,
+.summary-card span,
+.summary-card small,
+.money-cell span,
+.date-cell span,
+.totals-strip span,
+.inputs-grid span,
+.check-card span {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.import-tile .tile-icon {
+  color: var(--green);
+  font-size: 1rem;
+}
+
+.import-tile small {
+  color: var(--green);
+  font-weight: 800;
+}
+
+.check-card .check-number {
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.notice {
+  border-radius: 8px;
+  background: var(--navy);
+  color: white;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+.supplier-search-panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.96);
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  margin-bottom: 18px;
+  box-shadow: 0 10px 28px rgba(16, 42, 47, 0.07);
+}
+
+.supplier-search-panel h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.supplier-search-form {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.supplier-search-box {
+  flex: 1 1 320px;
+  justify-content: flex-start;
+}
+
+.supplier-search-box input {
+  width: 100%;
+}
+
+.supplier-result-summary {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+}
+
+.supplier-result-summary span,
+.supplier-message {
+  color: var(--muted);
+}
+
+.supplier-message {
+  margin: 0;
+}
+
+.supplier-results {
+  display: grid;
+  gap: 8px;
+  max-height: 360px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.type-total-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.summary-card,
+.type-total-card,
+.daily-panel,
+.detail-panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow);
+}
+
+.summary-card {
+  padding: 18px;
+  display: grid;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.summary-card::before {
+  content: "";
+  width: 4px;
+  height: 100%;
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--blue);
+}
+
+.type-total-card {
+  padding: 20px;
+  display: grid;
+  gap: 8px;
+  border-color: #c9e1d1;
+  background:
+    linear-gradient(135deg, #ffffff, #f1faf4);
+}
+
+.summary-card strong {
+  font-size: 1.35rem;
+}
+
+.type-total-card strong {
+  color: var(--green);
+  font-size: clamp(1.55rem, 2vw, 2rem);
+}
+
+.type-total-card span,
+.type-total-card small {
+  color: var(--muted);
+}
+
+.positive {
+  color: var(--green);
+}
+
+.negative {
+  color: var(--red);
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.22fr) minmax(360px, 0.78fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.daily-panel,
+.detail-panel {
+  padding: 18px;
+}
+
+.panel-heading,
+.checks-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.day-list {
+  display: grid;
+  gap: 8px;
+  max-height: 68vh;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.day-row {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  display: grid;
+  grid-template-columns: 18px minmax(120px, 1fr) repeat(2, minmax(120px, 0.7fr));
+  gap: 12px;
+  align-items: center;
+  text-align: left;
+  padding: 13px 14px;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+}
+
+.day-row:hover {
+  border-color: #b7cec0;
+  box-shadow: 0 8px 18px rgba(16, 42, 47, 0.07);
+  transform: translateY(-1px);
+}
+
+.day-row.active {
+  outline: 2px solid var(--green);
+  border-color: transparent;
+}
+
+.status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+}
+
+.day-row.green .status-dot {
+  background: var(--green);
+}
+
+.day-row.yellow .status-dot {
+  background: #d99b14;
+}
+
+.day-row.red .status-dot {
+  background: var(--red);
+}
+
+.date-cell,
+.money-cell,
+.check-card div {
+  display: grid;
+  gap: 3px;
+}
+
+.money-cell {
+  justify-items: end;
+}
+
+.inputs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.inputs-grid label {
+  display: grid;
+  gap: 6px;
+}
+
+.inputs-grid input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  min-height: 42px;
+  padding: 8px 10px;
+  background: white;
+}
+
+.totals-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.totals-strip div {
+  border-radius: 8px;
+  background: #f0f7f2;
+  padding: 12px;
+  display: grid;
+  gap: 5px;
+  border: 1px solid #d9eadc;
+}
+
+.warning-icon {
+  color: var(--red);
+}
+
+.checks-heading {
+  align-items: center;
+}
+
+.search-box {
+  min-width: 170px;
+  background: white;
+}
+
+.checks-list {
+  display: grid;
+  gap: 8px;
+  max-height: 42vh;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.check-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  box-shadow: 0 6px 16px rgba(16, 42, 47, 0.04);
+}
+
+.check-actions {
+  display: grid;
+  gap: 8px;
+  justify-items: end;
+}
+
+.mini-button {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--red);
+  min-height: 32px;
+  padding: 0 10px;
+  font-weight: 800;
+}
+
+.empty-state {
+  color: var(--muted);
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  padding: 18px;
+  margin: 0;
+}
+
+@media (max-width: 1020px) {
+  .summary-grid,
+  .type-total-grid,
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .day-list,
+  .checks-list {
+    max-height: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .app-shell {
+    padding: 18px;
+  }
+
+  .topbar,
+  .panel-heading,
+  .checks-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .topbar {
+    background: rgba(255, 255, 255, 0.94);
+  }
+
+  .brand-block {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .brand-logo {
+    width: min(220px, 78vw);
+  }
+
+  .top-actions,
+  .date-control,
+  .ghost-button,
+  .danger-button,
+  .export-link,
+  .primary-button,
+  .search-box,
+  .supplier-search-form {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .summary-grid,
+  .inputs-grid,
+  .totals-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .day-row {
+    grid-template-columns: 14px 1fr;
+  }
+
+  .money-cell {
+    justify-items: start;
+    grid-column: 2;
+  }
+
+  .check-card {
+    display: grid;
+  }
+
+  .check-actions {
+    justify-items: start;
+  }
+}
