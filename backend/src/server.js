@@ -249,6 +249,51 @@ app.get('/api/checks', (req, res) => {
   res.json({ rows });
 });
 
+app.get('/api/checks/by-supplier', (req, res) => {
+  const query = String(req.query.q || '').trim();
+  const today = localDate();
+
+  if (query.length < 2) {
+    res.json({ rows: [], total: 0, count: 0 });
+    return;
+  }
+
+  const rows = db
+    .prepare(
+      `
+      SELECT
+        MIN(id) AS id,
+        source_type,
+        payment_date,
+        MAX(amount) AS amount,
+        check_number,
+        MAX(bank) AS bank,
+        MAX(supplier) AS supplier,
+        MAX(cuit) AS cuit,
+        MAX(status) AS status,
+        MAX(source_file) AS source_file,
+        CASE WHEN payment_date < ? THEN 1 ELSE 0 END AS is_overdue
+      FROM checks
+      WHERE ${ACTIVE_CHECK_FILTER}
+        AND UPPER(COALESCE(supplier, '')) LIKE UPPER(?)
+      GROUP BY
+        source_type,
+        CASE
+          WHEN TRIM(COALESCE(check_number, '')) = '' THEN 'id:' || id
+          ELSE TRIM(check_number)
+        END
+      ORDER BY payment_date ASC, amount DESC
+      `
+    )
+    .all(today, `%${query}%`);
+
+  res.json({
+    rows,
+    total: rows.reduce((sum, row) => sum + row.amount, 0),
+    count: rows.length
+  });
+});
+
 app.delete('/api/checks', (_req, res) => {
   const type = _req.query.type;
   if (type === 'echeq' || type === 'physical') {

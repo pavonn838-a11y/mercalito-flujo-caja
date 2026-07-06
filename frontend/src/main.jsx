@@ -55,6 +55,10 @@ function App() {
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState('');
   const [search, setSearch] = useState('');
+  const [supplierSearch, setSupplierSearch] = useState('');
+  const [supplierResults, setSupplierResults] = useState({ rows: [], total: 0, count: 0 });
+  const [supplierLoading, setSupplierLoading] = useState(false);
+  const [supplierMessage, setSupplierMessage] = useState('');
   const [loadSummary, setLoadSummary] = useState({
     echeq: 0,
     physical: 0,
@@ -170,6 +174,32 @@ function App() {
     }
   }
 
+  async function searchSupplier(event) {
+    event?.preventDefault();
+    const value = supplierSearch.trim();
+
+    if (value.length < 2) {
+      setSupplierMessage('Escribi al menos 2 letras de la razon social.');
+      setSupplierResults({ rows: [], total: 0, count: 0 });
+      return;
+    }
+
+    setSupplierLoading(true);
+    setSupplierMessage('');
+
+    try {
+      const response = await fetch(`${API_URL}/api/checks/by-supplier?q=${encodeURIComponent(value)}`);
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'No se pudo buscar.');
+      setSupplierResults(data);
+      setSupplierMessage(data.count ? '' : 'No encontre cheques para esa razon social.');
+    } catch (error) {
+      setSupplierMessage(error.message);
+    } finally {
+      setSupplierLoading(false);
+    }
+  }
+
   function updateLocalDay(date, key, value) {
     setDashboard((current) => ({
       ...current,
@@ -247,6 +277,57 @@ function App() {
       </section>
 
       {(message || uploading) && <div className="notice">{uploading ? 'Importando archivos...' : message}</div>}
+
+      <section className="supplier-search-panel">
+        <div>
+          <p className="eyebrow">Busqueda general</p>
+          <h2>Buscar cheques por razon social</h2>
+        </div>
+        <form className="supplier-search-form" onSubmit={searchSupplier}>
+          <label className="search-box supplier-search-box">
+            <Search size={16} />
+            <input
+              type="search"
+              placeholder="Ej: nombre del proveedor"
+              value={supplierSearch}
+              onChange={(event) => setSupplierSearch(event.target.value)}
+            />
+          </label>
+          <button className="primary-button" type="submit" disabled={supplierLoading}>
+            <Search size={17} />
+            {supplierLoading ? 'Buscando...' : 'Buscar razon social'}
+          </button>
+        </form>
+        <div className="supplier-result-summary">
+          <span>{supplierResults.count} cheques encontrados</span>
+          <strong>{formatMoney(supplierResults.total)}</strong>
+        </div>
+        {supplierMessage && <p className="supplier-message">{supplierMessage}</p>}
+        {supplierResults.rows.length > 0 && (
+          <div className="supplier-results">
+            {supplierResults.rows.map((check) => (
+              <article className="check-card" key={`${check.source_type}-${check.id}`}>
+                <div>
+                  <strong>{check.supplier || 'Sin razon social'}</strong>
+                  <span className="check-number">
+                    Nro {check.source_type === 'echeq' ? 'eCheq' : 'cheque'}: {check.check_number || 'sin numero'}
+                  </span>
+                  <span>
+                    {check.source_type === 'echeq' ? 'eCheq' : 'Cheque fisico'} · Dia de pago {formatDate(check.payment_date)} · {check.status || 'sin estado'}
+                  </span>
+                  <span>
+                    {[check.cuit, check.bank, check.source_file].filter(Boolean).join(' · ')}
+                    {check.is_overdue ? ' · vencido' : ''}
+                  </span>
+                </div>
+                <div className="check-actions">
+                  <strong>{formatMoney(check.amount)}</strong>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
 
       <section className="type-total-grid">
         <article className="type-total-card">
