@@ -46,6 +46,21 @@ function formatDate(date) {
   }).format(new Date(`${date}T12:00:00`));
 }
 
+function csvCell(value) {
+  const text = String(value ?? '');
+  return `"${text.replaceAll('"', '""')}"`;
+}
+
+function fileSafeName(value) {
+  return value
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'razon-social';
+}
+
 function App() {
   const today = new Date().toISOString().slice(0, 10);
   const [fromDate, setFromDate] = useState(today);
@@ -200,6 +215,48 @@ function App() {
     }
   }
 
+  function downloadSupplierResults() {
+    if (!supplierResults.rows.length) return;
+
+    const headers = [
+      'Razon social',
+      'CUIT',
+      'Tipo',
+      'Numero',
+      'Fecha de pago',
+      'Estado',
+      'Banco',
+      'Archivo',
+      'Importe'
+    ];
+
+    const rows = supplierResults.rows.map((check) => [
+      check.supplier || '',
+      check.cuit || '',
+      check.source_type === 'echeq' ? 'eCheq' : 'Cheque fisico',
+      check.check_number || '',
+      check.payment_date || '',
+      check.status || '',
+      check.bank || '',
+      check.source_file || '',
+      check.amount || 0
+    ]);
+
+    const csv = [headers, ...rows]
+      .map((row) => row.map(csvCell).join(';'))
+      .join('\n');
+    const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download = `cheques-${fileSafeName(supplierSearch)}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  }
+
   function updateLocalDay(date, key, value) {
     setDashboard((current) => ({
       ...current,
@@ -296,6 +353,15 @@ function App() {
           <button className="primary-button" type="submit" disabled={supplierLoading}>
             <Search size={17} />
             {supplierLoading ? 'Buscando...' : 'Buscar razon social'}
+          </button>
+          <button
+            className="ghost-button"
+            type="button"
+            onClick={downloadSupplierResults}
+            disabled={!supplierResults.rows.length}
+          >
+            <Download size={17} />
+            Descargar resultado
           </button>
         </form>
         <div className="supplier-result-summary">
